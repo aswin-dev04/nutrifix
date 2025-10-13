@@ -1,0 +1,98 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String   @id @default(uuid())
+  email         String   @unique
+  passwordHash  String   @map("password_hash")
+  name          String
+  age           Int?
+  weight        Float?   // in kg
+  height        Float?   // in cm
+  activityLevel String?  @map("activity_level") // sedentary, light, moderate, active, very_active
+  goal          String?  // weight_loss, maintenance, muscle_gain
+  targetProtein Float?   @map("target_protein")
+  targetCarbs   Float?   @map("target_carbs")
+  targetFats    Float?   @map("target_fats")
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @updatedAt @map("updated_at")
+  
+  orders        Order[]
+
+  @@map("users")
+}
+
+model Vendor {
+  id           String   @id @default(uuid())
+  name         String
+  email        String   @unique
+  passwordHash String   @map("password_hash")
+  description  String?
+  address      String
+  latitude     Float?
+  longitude    Float?
+  phone        String
+  isVerified   Boolean  @default(false) @map("is_verified")
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+  
+  meals        Meal[]
+  orders       Order[]
+
+  @@map("vendors")
+}
+
+model Meal {
+  id              String   @id @default(uuid())
+  vendorId        String   @map("vendor_id")
+  name            String
+  description     String?
+  protein         Float    // grams
+  carbs           Float    // grams
+  fats            Float    // grams
+  calories        Float    // kcal
+  price           Float    // in INR
+  cuisineType     String?  @map("cuisine_type")
+  isAvailable     Boolean  @default(true) @map("is_available")
+  preparationTime Int      @map("preparation_time") // minutes
+  imageUrl        String?  @map("image_url")
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @updatedAt @map("updated_at")
+  
+  vendor          Vendor   @relation(fields: [vendorId], references: [id], onDelete: Cascade)
+  orders          Order[]
+
+  @@index([vendorId])
+  @@index([protein, carbs, fats])
+  @@index([isAvailable])
+  @@map("meals")
+}
+
+model Order {
+  id              String    @id @default(uuid())
+  userId          String    @map("user_id")
+  mealId          String    @map("meal_id")
+  vendorId        String    @map("vendor_id")
+  status          String    @default("pending") // pending, confirmed, preparing, out_for_delivery, delivered, cancelled
+  quantity        Int       @default(1)
+  totalPrice      Float     @map("total_price")
+  deliveryAddress String    @map("delivery_address")
+  orderedAt       DateTime  @default(now()) @map("ordered_at")
+  deliveredAt     DateTime? @map("delivered_at")
+  
+  user            User      @relation(fields: [userId], references: [id])
+  meal            Meal      @relation(fields: [mealId], references: [id])
+  vendor          Vendor    @relation(fields: [vendorId], references: [id])
+
+  @@index([userId])
+  @@index([vendorId])
+  @@index([status])
+  @@index([orderedAt])
+  @@map("orders")
+}
