@@ -1,6 +1,6 @@
-
 import express from 'express';
 import dotenv from 'dotenv';
+import mealRoutes from './routes/mealRoutes';
 
 // Load environment variables
 dotenv.config();
@@ -8,18 +8,31 @@ dotenv.config();
 const app = express();
 const port = process.env.PORT || 3000;
 
-// Middleware to parse JSON request bodies
+// Middleware
 app.use(express.json());
 
-// A simple test route
+// Health check
 app.get('/', (req, res) => {
-  res.send('NutriFix server is running!');
+  res.json({
+    message: 'NutriFix API is running!',
+    version: '1.0.0',
+    endpoints: {
+      meals: '/api/meals',
+      health: '/health'
+    }
+  });
 });
 
-// TODO: Add your API routes here
-// import authRoutes from './routes/authRoutes';
-// app.use('/api/auth', authRoutes);
+app.get('/health', (req, res) => {
+  res.json({ status: 'OK', timestamp: new Date().toISOString() });
+});
 
+// API Routes
+app.use('/api/meals', mealRoutes);
+
+// Start server
 app.listen(port, () => {
-  console.log(`Server is listening on port ${port}`);
+  console.log(` NutriFix API running on http://localhost:${port}`);
+  console.log(` Health check: http://localhost:${port}/health`);
+  console.log(` Meals API: http://localhost:${port}/api/meals`);
 });
