@@ -1,6 +1,7 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import mealRoutes from './routes/mealRoutes';
+import authRoutes from './routes/authRoutes';
 
 // Load environment variables
 dotenv.config();
@@ -10,6 +11,10 @@ const port = process.env.PORT || 3000;
 
 // Middleware
 app.use(express.json());
+
+// API Routes
+app.use('/api/meals', mealRoutes);
+app.use('/api/auth', authRoutes);
 
 // Health check
 app.get('/', (req, res) => {
@@ -26,9 +31,6 @@ app.get('/', (req, res) => {
 app.get('/health', (req, res) => {
   res.json({ status: 'OK', timestamp: new Date().toISOString() });
 });
-
-// API Routes
-app.use('/api/meals', mealRoutes);
 
 // Start server
 app.listen(port, () => {
