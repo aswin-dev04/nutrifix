@@ -2,6 +2,7 @@ import express from 'express';
 import dotenv from 'dotenv';
 import mealRoutes from './routes/mealRoutes';
 import authRoutes from './routes/authRoutes';
+import orderRoutes from './routes/orderRoutes';
 
 // Load environment variables
 dotenv.config();
@@ -15,6 +16,7 @@ app.use(express.json());
 // API Routes
 app.use('/api/meals', mealRoutes);
 app.use('/api/auth', authRoutes);
+app.use('/api/orders', orderRoutes);
 
 // Health check
 app.get('/', (req, res) => {
