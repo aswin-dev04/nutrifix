@@ -3,6 +3,8 @@ import dotenv from 'dotenv';
 import mealRoutes from './routes/mealRoutes';
 import authRoutes from './routes/authRoutes';
 import orderRoutes from './routes/orderRoutes';
+import agenetRoutes from './routes/agentRoutes';
+import userRouter from './routes/userRoutes';
 
 // Load environment variables
 dotenv.config();
@@ -17,6 +19,8 @@ app.use(express.json());
 app.use('/api/meals', mealRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/orders', orderRoutes);
+app.use('/api/agents', agenetRoutes);
+app.use('/api/users', userRouter);
 
 // Health check
 app.get('/', (req, res) => {

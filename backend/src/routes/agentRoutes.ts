@@ -1,12 +1,11 @@
 import express from 'express';
+import auth from '../middleware/auth';
 import { suggestMacros, recommendMeals } from '../controllers/agentController';
 
 const router = express.Router();
 
-// Macro suggestion endpoint
-router.post('/suggest-macros', suggestMacros);
+router.post('/suggest-macros', auth, suggestMacros);
 
-// Meal recommendation endpoint
-router.post('/recommend-meals', recommendMeals);
+router.post('/recommend-meals', auth, recommendMeals);
 
 export default router;

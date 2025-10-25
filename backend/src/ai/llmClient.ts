@@ -1,4 +1,4 @@
-import OpenAI from 'openai';
+import Groq from "groq-sdk";
 
 interface ChatParams {
   model?: string;
@@ -9,22 +9,21 @@ interface ChatParams {
 }
 
 class LLMClient {
-  private openai: OpenAI;
+  private groq: Groq;
   
   constructor() {
-    this.openai = new OpenAI({
-      apiKey: process.env.OPENAI_API_KEY
+    this.groq = new Groq({
+      apiKey: process.env.GROQ_API_KEY
     });
   }
 
   async chat(params: ChatParams) {
     try {
-      const response = await this.openai.chat.completions.create({
-        model: params.model || process.env.AI_MODEL || 'gpt-4o-mini',
-        messages: params.messages,
-        response_format: params.response_format,
-        temperature: params.temperature || parseFloat(process.env.AI_TEMPERATURE || '0.7'),
-        max_tokens: params.max_tokens || parseInt(process.env.AI_MAX_TOKENS || '1000')
+      const response = await this.groq.chat.completions.create({
+        model: process.env.model || 'llama-3.1-8b-instant',
+        messages: params.messages as any,
+        temperature: Number(process.env.GROQ_TEMPERATURE) || 0.7,
+        max_tokens: Number(process.env.GROQ_MAX_TOKENS) || 1000,
       });
 
       return {
