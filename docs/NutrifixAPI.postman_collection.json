@@ -1,0 +1,557 @@
+{
+	"info": {
+		"_postman_id": "df2dd3bc-9915-4b83-b4c5-353da893968e",
+		"name": "NutrifixAPI",
+		"description": "AI-powered nutrition marketplace backend API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "41699760"
+	},
+	"item": [
+		{
+			"name": "Authentication",
+			"item": [
+				{
+					"name": "Register User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 201) {",
+									"    const response = pm.response.json();",
+									"    pm.environment.set(\"auth_token\", response.data.token);",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"John Doe\",\n  \"email\": \"john@example.com\",\n  \"password\": \"password123\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://nutrifix-ygyz.onrender.com/api/auth/register",
+							"protocol": "https",
+							"host": [
+								"nutrifix-ygyz",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"api",
+								"auth",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    const response = pm.response.json();",
+									"    pm.environment.set(\"auth_token\", response.data.token);",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"john@example.com\",\n  \"password\": \"password123\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://nutrifix-ygyz.onrender.com/api/auth/login",
+							"protocol": "https",
+							"host": [
+								"nutrifix-ygyz",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"api",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Meals",
+			"item": [
+				{
+					"name": "All Meals",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://nutrifix-ygyz.onrender.com/api/meals",
+							"protocol": "https",
+							"host": [
+								"nutrifix-ygyz",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"api",
+								"meals"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Meals by Macros",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://nutrifix-ygyz.onrender.com/api/meals/search?protein=150&carbs=300&fats=60&tolerance=10",
+							"protocol": "https",
+							"host": [
+								"nutrifix-ygyz",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"api",
+								"meals",
+								"search"
+							],
+							"query": [
+								{
+									"key": "protein",
+									"value": "150"
+								},
+								{
+									"key": "carbs",
+									"value": "300"
+								},
+								{
+									"key": "fats",
+									"value": "60"
+								},
+								{
+									"key": "tolerance",
+									"value": "10"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Single Meal",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://nutrifix-ygyz.onrender.com/api/meals/:id",
+							"protocol": "https",
+							"host": [
+								"nutrifix-ygyz",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"api",
+								"meals",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "8b5a7da7-d843-41c4-adff-73b93e44a811"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Orders",
+			"item": [
+				{
+					"name": "create order",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"mealId\": \"paste-meal-id-here\",\n  \"quantity\": 2,\n  \"deliveryAddress\": \"123 Main Street, Chennai, Tamil Nadu 600001\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://nutrifix-ygyz.onrender.com/api/orders",
+							"protocol": "https",
+							"host": [
+								"nutrifix-ygyz",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"api",
+								"orders"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "All user orders",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://nutrifix-ygyz.onrender.com/api/orders",
+							"protocol": "https",
+							"host": [
+								"nutrifix-ygyz",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"api",
+								"orders"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Single user order",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://nutrifix-ygyz.onrender.com/api/orders/:id",
+							"protocol": "https",
+							"host": [
+								"nutrifix-ygyz",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"api",
+								"orders",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "New Request",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "https://nutrifix-ygyz.onrender.com/api/orders/:id",
+							"protocol": "https",
+							"host": [
+								"nutrifix-ygyz",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"api",
+								"orders",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "AI agents",
+			"item": [
+				{
+					"name": "macro suggestion",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"age\": 25,\n  \"weight\": 75,\n  \"height\": 175,\n  \"activityLevel\": \"moderate\",\n  \"goal\": \"muscle gain\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://nutrifix-ygyz.onrender.com/api/agents/suggest-macros",
+							"protocol": "https",
+							"host": [
+								"nutrifix-ygyz",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"api",
+								"agents",
+								"suggest-macros"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "meal recommendation",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"userProfile\": {\n    \"targetProtein\": 150,\n    \"targetCarbs\": 300,\n    \"targetFats\": 60\n  },\n  \"context\": {}\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://nutrifix-ygyz.onrender.com/api/agents/recommend-meals",
+							"protocol": "https",
+							"host": [
+								"nutrifix-ygyz",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"api",
+								"agents",
+								"recommend-meals"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "User Profile",
+			"item": [
+				{
+					"name": "update user profile",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"John Updated\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://nutrifix-ygyz.onrender.com/api/users/profile",
+							"protocol": "https",
+							"host": [
+								"nutrifix-ygyz",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"api",
+								"users",
+								"profile"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "view user profile",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://nutrifix-ygyz.onrender.com/api/users/profile",
+							"protocol": "https",
+							"host": [
+								"nutrifix-ygyz",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"api",
+								"users",
+								"profile"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
